@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 import visualize
 
-# tensorflow config - using one gpu and extending the GPU 
+# tensorflow config - using one gpu and extending the GPU
 # memory region needed by the TensorFlow process
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 # config = tf.ConfigProto()
@@ -77,7 +77,7 @@ proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
 
 # %%
-visualize.display_instances(ori_img, res['rois'], res['class_ids'], 
+visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
 
 # %%
@@ -103,7 +103,7 @@ for batch in range(100):
 # %%
 proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
-visualize.display_instances(ori_img, res['rois'], res['class_ids'], 
+visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
 
 # %%
@@ -134,7 +134,7 @@ for epoch in range(epochs):
 
     loss_history = []
     for (batch, inputs) in enumerate(train_tf_dataset):
-    
+
         batch_imgs, batch_metas, batch_bboxes, batch_labels = inputs
         with tf.GradientTape() as tape:
             rpn_class_loss, rpn_bbox_loss, rcnn_class_loss, rcnn_bbox_loss = \
@@ -146,6 +146,6 @@ for epoch in range(epochs):
         optimizer.apply_gradients(list(zip(grads, model.trainable_variables)))
 
         loss_history.append(loss_value.numpy())
-        
+
         if batch % 100 == 0:
             print(('epoch:', epoch, ', batch:', batch, ', loss:', np.mean(loss_history)))
