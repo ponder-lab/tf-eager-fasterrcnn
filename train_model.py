@@ -70,9 +70,6 @@ batch_labels = tf.Variable(np.expand_dims(labels, 0), dtype=tf.int32)
 _ = model((batch_imgs, batch_metas), training=False)
 
 # %%
-model.load_weights('weights/faster_rcnn.h5', by_name=True)
-
-# %%
 proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
 
