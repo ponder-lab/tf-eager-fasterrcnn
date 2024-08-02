@@ -125,7 +125,7 @@ train_tf_dataset = train_tf_dataset.prefetch(100).shuffle(100)
 # %%
 optimizer = tf.keras.optimizers.SGD(1e-3, momentum=0.9, nesterov=True)
 
-epochs = 20
+epochs = 1
 
 for epoch in range(epochs):
 
