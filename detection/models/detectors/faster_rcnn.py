@@ -100,6 +100,7 @@ class FasterRCNN(tf.keras.Model, RPNTestMixin, BBoxTestMixin):
             max_instances=self.RCNN_MAX_INSTANCES,
             name='b_box_head')
 
+    @tf.function
     def __call__(self, inputs, training=True):      
         if training: # training
             imgs, img_metas, gt_boxes, gt_class_ids = inputs

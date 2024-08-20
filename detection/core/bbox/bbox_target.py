@@ -34,6 +34,7 @@ class ProposalTarget(object):
         self.neg_iou_thr = neg_iou_thr
         self.num_classes = num_classes
             
+    @tf.function
     def build_targets(self, proposals, gt_boxes, gt_class_ids, img_metas):
         '''Generates detection targets for images. Subsamples proposals and
         generates target class IDs, bounding box deltas for each.

@@ -100,6 +100,7 @@ with strategy.scope():
 # %%
 with strategy.scope():
 
+    @tf.function
     def train_step(inputs):
         batch_imgs, batch_metas, batch_bboxes, batch_labels = inputs
         with tf.GradientTape() as tape:
@@ -119,6 +120,7 @@ with strategy.scope():
 # %%
 with strategy.scope():
  
+    @tf.function
     def distributed_train_step(inputs):
         per_replica_losses = strategy.experimental_run_v2(train_step,
                                                           args=(inputs,))

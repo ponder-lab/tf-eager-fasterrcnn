@@ -29,6 +29,7 @@ class AnchorTarget(object):
         self.pos_iou_thr = pos_iou_thr
         self.neg_iou_thr = neg_iou_thr
 
+    @tf.function
     def build_targets(self, anchors, valid_flags, gt_boxes, gt_class_ids):
         '''Given the anchors and GT boxes, compute overlaps and identify positive
         anchors and deltas to refine them to match their corresponding GT boxes.
@@ -71,6 +72,7 @@ class AnchorTarget(object):
         
         return rpn_labels, rpn_label_weights, rpn_delta_targets, rpn_delta_weights
 
+    @tf.function
     def _build_single_target(self, anchors, valid_flags, gt_boxes, gt_class_ids):
         '''Compute targets per instance.
         

@@ -2,6 +2,7 @@ import tensorflow as tf
 
 from detection.utils.misc import *
 
+@tf.function
 def bbox2delta(box, gt_box, target_means, target_stds):
     '''Compute refinement needed to transform box to gt_box.
     
@@ -75,6 +76,7 @@ def delta2bbox(box, delta, target_means, target_stds):
     result = tf.stack([y1, x1, y2, x2], axis=1)
     return result
 
+@tf.function
 def bbox_clip(box, window):
     '''
     Args
