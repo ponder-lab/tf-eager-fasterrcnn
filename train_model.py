@@ -4,9 +4,12 @@ import tensorflow as tf
 import numpy as np
 import visualize
 
+from scripts.utils import write_csv
+import timeit
+
 # tensorflow config - using one gpu and extending the GPU
 # memory region needed by the TensorFlow process
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
@@ -127,6 +130,9 @@ optimizer = tf.keras.optimizers.SGD(1e-3, momentum=0.9, nesterov=True)
 
 epochs = 1
 
+start_time = timeit.default_timer()
+skipped_time = 0
+
 for epoch in range(epochs):
 
     loss_history = []
@@ -145,4 +151,10 @@ for epoch in range(epochs):
         loss_history.append(loss_value.numpy())
 
         if batch % 100 == 0:
+            print_time = timeit.default_timer()
             print(('epoch:', epoch, ', batch:', batch, ', loss:', np.mean(loss_history)))
+            skipped_time += timeit.default_timer() - print_time
+
+time = timeit.default_timer() - start_time - skipped_time
+
+write_csv(__file__, epochs, loss=float(np.mean(loss_history)), time=time)
