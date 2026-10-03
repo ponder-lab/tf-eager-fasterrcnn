@@ -60,8 +60,6 @@ visualize.display_instances(rgb_img, bboxes, labels, train_dataset.get_categorie
 # %%
 from detection.models.detectors import faster_rcnn
 
-# Timing starts here, before the model is built: the build pass, the sample inference and the
-# 100-step sample training below all run the model's functions, so their tracing is counted.
 start_time = timeit.default_timer()
 skipped_time = 0
 
