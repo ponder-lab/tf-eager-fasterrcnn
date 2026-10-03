@@ -60,6 +60,9 @@ visualize.display_instances(rgb_img, bboxes, labels, train_dataset.get_categorie
 # %%
 from detection.models.detectors import faster_rcnn
 
+start_time = timeit.default_timer()
+skipped_time = 0
+
 model = faster_rcnn.FasterRCNN(
     num_classes=len(train_dataset.get_categories()))
 
@@ -77,8 +80,10 @@ proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
 
 # %%
+display_time = timeit.default_timer()
 visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
+skipped_time += timeit.default_timer() - display_time
 
 # %%
 """
@@ -98,13 +103,17 @@ for batch in range(100):
     grads = tape.gradient(loss_value, model.trainable_variables)
     optimizer.apply_gradients(list(zip(grads, model.trainable_variables)))
 
+    print_time = timeit.default_timer()
     print(('batch', batch, '-', loss_value.numpy()))
+    skipped_time += timeit.default_timer() - print_time
 
 # %%
 proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
+display_time = timeit.default_timer()
 visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
+skipped_time += timeit.default_timer() - display_time
 
 # %%
 """
@@ -129,9 +138,6 @@ train_tf_dataset = train_tf_dataset.prefetch(100).shuffle(100)
 optimizer = tf.keras.optimizers.SGD(1e-3, momentum=0.9, nesterov=True)
 
 epochs = 1
-
-start_time = timeit.default_timer()
-skipped_time = 0
 
 for epoch in range(epochs):
 
