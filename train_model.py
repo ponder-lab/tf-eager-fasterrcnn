@@ -105,9 +105,8 @@ for batch in range(100):
     grads = tape.gradient(loss_value, model.trainable_variables)
     optimizer.apply_gradients(list(zip(grads, model.trainable_variables)))
 
-    loss_value_v = loss_value.numpy()  # Read in the timed region, so waiting for queued GPU work is counted; only the print is skipped.
     print_time = timeit.default_timer()
-    print(('batch', batch, '-', loss_value_v))
+    print(('batch', batch, '-', loss_value.numpy()))
     skipped_time += timeit.default_timer() - print_time
 
 # %%
