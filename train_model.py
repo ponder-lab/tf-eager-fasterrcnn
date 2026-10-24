@@ -4,9 +4,12 @@ import tensorflow as tf
 import numpy as np
 import visualize
 
+from scripts.utils import write_csv
+import timeit
+
 # tensorflow config - using one gpu and extending the GPU
 # memory region needed by the TensorFlow process
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
@@ -57,6 +60,9 @@ visualize.display_instances(rgb_img, bboxes, labels, train_dataset.get_categorie
 # %%
 from detection.models.detectors import faster_rcnn
 
+start_time = timeit.default_timer()
+skipped_time = 0
+
 model = faster_rcnn.FasterRCNN(
     num_classes=len(train_dataset.get_categories()))
 
@@ -70,12 +76,20 @@ batch_labels = tf.Variable(np.expand_dims(labels, 0), dtype=tf.int32)
 _ = model((batch_imgs, batch_metas), training=False)
 
 # %%
+model.built = True
+load_time = timeit.default_timer()
+model.load_weights('weights/faster_rcnn.h5', by_name=True)
+skipped_time += timeit.default_timer() - load_time
+
+# %%
 proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
 
 # %%
+display_time = timeit.default_timer()
 visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
+skipped_time += timeit.default_timer() - display_time
 
 # %%
 """
@@ -95,13 +109,17 @@ for batch in range(100):
     grads = tape.gradient(loss_value, model.trainable_variables)
     optimizer.apply_gradients(list(zip(grads, model.trainable_variables)))
 
+    print_time = timeit.default_timer()
     print(('batch', batch, '-', loss_value.numpy()))
+    skipped_time += timeit.default_timer() - print_time
 
 # %%
 proposals = model.simple_test_rpn(img, img_meta)
 res = model.simple_test_bboxes(img, img_meta, proposals)
+display_time = timeit.default_timer()
 visualize.display_instances(ori_img, res['rois'], res['class_ids'],
                             train_dataset.get_categories(), scores=res['scores'])
+skipped_time += timeit.default_timer() - display_time
 
 # %%
 """
@@ -145,4 +163,10 @@ for epoch in range(epochs):
         loss_history.append(loss_value.numpy())
 
         if batch % 100 == 0:
+            print_time = timeit.default_timer()
             print(('epoch:', epoch, ', batch:', batch, ', loss:', np.mean(loss_history)))
+            skipped_time += timeit.default_timer() - print_time
+
+time = timeit.default_timer() - start_time - skipped_time
+
+write_csv(__file__, epochs, loss=float(np.mean(loss_history)), time=time)

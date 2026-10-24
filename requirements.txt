@@ -1,0 +1,8 @@
+# Packages train_model.py needs on top of an environment providing TensorFlow 2.9.3 and NumPy 1.23.5,
+# pinned to versions that install on Python 3.10 alongside NumPy 1.23.5 without changing it. The
+# headless OpenCV build provides cv2 without GUI libraries.
+opencv-python-headless==4.8.1.78
+pycocotools==2.0.7
+matplotlib==3.7.5
+scikit-image==0.21.0
+ipython==8.18.1
