@@ -78,6 +78,7 @@ class RPNHead(tf.keras.Model):
         self.rpn_delta_pred = layers.Conv2D(len(anchor_ratios) * 4, (1, 1),
                                            name='rpn_bbox_pred')
         
+    @tf.function
     def __call__(self, inputs, training=True):
         '''
         Args

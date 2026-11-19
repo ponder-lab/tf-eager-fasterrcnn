@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+@tf.function
 def compute_overlaps(boxes1, boxes2):
     '''Computes IoU overlaps between two sets of boxes.
     boxes1, boxes2: [N, (y1, x1, y2, x2)].
