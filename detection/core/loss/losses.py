@@ -7,6 +7,7 @@ class SmoothL1Loss(layers.Layer):
         super(SmoothL1Loss, self).__init__()
         self._rho = rho
         
+    @tf.function
     def __call__(self, y_true, y_pred, sample_weight=None):
         loss = tf.abs(y_true - y_pred)
         loss = tf.where(loss > self._rho, loss - 0.5 * self._rho, 
@@ -25,6 +26,7 @@ class RPNClassLoss(layers.Layer):
             losses.SparseCategoricalCrossentropy(from_logits=True,
                                                  reduction=losses.Reduction.NONE)
 
+    @tf.function
     def __call__(self, rpn_labels, rpn_class_logits, rpn_label_weights):       
         # Filtering if label == -1
         indices = tf.where(tf.not_equal(rpn_labels, -1))
@@ -45,6 +47,7 @@ class RPNBBoxLoss(layers.Layer):
         super(RPNBBoxLoss, self).__init__()
         self.smooth_l1_loss = SmoothL1Loss()
         
+    @tf.function
     def __call__(self, rpn_delta_targets, rpn_deltas, rpn_delta_weights):
         loss = self.smooth_l1_loss(y_true=rpn_delta_targets, 
                                    y_pred=rpn_deltas, 
@@ -61,6 +64,7 @@ class RCNNClassLoss(layers.Layer):
             losses.SparseCategoricalCrossentropy(from_logits=True, 
                                                  reduction=losses.Reduction.NONE)
 
+    @tf.function
     def __call__(self, rcnn_labels, rcnn_class_logits, rcnn_label_weights):
         # Filtering if label == -1
         indices = tf.where(tf.not_equal(rcnn_labels, -1))
@@ -81,6 +85,7 @@ class RCNNBBoxLoss(layers.Layer):
         super(RCNNBBoxLoss, self).__init__()
         self.smooth_l1_loss = SmoothL1Loss()
         
+    @tf.function
     def __call__(self, rcnn_delta_targets, rcnn_deltas, rcnn_delta_weights):
         loss = self.smooth_l1_loss(y_true=rcnn_delta_targets, 
                                    y_pred=rcnn_deltas, 
