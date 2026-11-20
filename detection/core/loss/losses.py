@@ -47,7 +47,7 @@ class RPNBBoxLoss(layers.Layer):
         super(RPNBBoxLoss, self).__init__()
         self.smooth_l1_loss = SmoothL1Loss()
         
-    @tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32), tf.TensorSpec(shape=None, dtype=tf.float32), tf.TensorSpec(shape=None, dtype=tf.float32)])
+    @tf.function(reduce_retracing=True)
     def __call__(self, rpn_delta_targets, rpn_deltas, rpn_delta_weights):
         loss = self.smooth_l1_loss(y_true=rpn_delta_targets, 
                                    y_pred=rpn_deltas, 
@@ -85,7 +85,7 @@ class RCNNBBoxLoss(layers.Layer):
         super(RCNNBBoxLoss, self).__init__()
         self.smooth_l1_loss = SmoothL1Loss()
         
-    @tf.function(input_signature=[tf.TensorSpec(shape=(None, None, 4), dtype=tf.float32), tf.TensorSpec(shape=(None, None, 4), dtype=tf.float32), tf.TensorSpec(shape=(None, None, 4), dtype=tf.float32)])
+    @tf.function(reduce_retracing=True)
     def __call__(self, rcnn_delta_targets, rcnn_deltas, rcnn_delta_weights):
         loss = self.smooth_l1_loss(y_true=rcnn_delta_targets, 
                                    y_pred=rcnn_deltas, 

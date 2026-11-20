@@ -75,7 +75,7 @@ def delta2bbox(box, delta, target_means, target_stds):
     result = tf.stack([y1, x1, y2, x2], axis=1)
     return result
 
-@tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32), tf.TensorSpec(shape=(4,), dtype=tf.float32)])
+@tf.function(reduce_retracing=True)
 def bbox_clip(box, window):
     '''
     Args
