@@ -2,7 +2,6 @@ import tensorflow as tf
 
 from detection.utils.misc import *
 
-@tf.function
 def bbox2delta(box, gt_box, target_means, target_stds):
     '''Compute refinement needed to transform box to gt_box.
     
@@ -96,6 +95,7 @@ def bbox_clip(box, window):
     clipped.set_shape((clipped.shape[0], 4))
     return clipped
 
+@tf.function
 def bbox_flip(bboxes, width):
     '''Flip bboxes horizontally.
     

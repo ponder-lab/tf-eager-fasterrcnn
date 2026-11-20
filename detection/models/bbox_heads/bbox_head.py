@@ -87,7 +87,6 @@ class BBoxHead(tf.keras.Model):
         
         return rcnn_class_loss, rcnn_bbox_loss
         
-    @tf.function
     def get_bboxes(self, rcnn_probs, rcnn_deltas, rois, img_metas):
         '''
         Args

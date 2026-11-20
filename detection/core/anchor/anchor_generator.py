@@ -19,7 +19,6 @@ class AnchorGenerator(object):
         self.ratios = ratios
         self.feature_strides = feature_strides
      
-    @tf.function
     def generate_pyramid_anchors(self, img_metas):
         '''Generate the multi-level anchors for Region Proposal Network
         
@@ -53,7 +52,6 @@ class AnchorGenerator(object):
         
         return anchors, valid_flags
     
-    @tf.function
     def _generate_valid_flags(self, anchors, img_shape):
         '''
         Args

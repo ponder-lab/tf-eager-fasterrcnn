@@ -114,7 +114,6 @@ class RPNHead(tf.keras.Model):
         
         return rpn_class_logits, rpn_probs, rpn_deltas
 
-    @tf.function
     def loss(self, rpn_class_logits, rpn_deltas, gt_boxes, gt_class_ids, img_metas):
         '''Calculate rpn loss
         '''
@@ -130,7 +129,6 @@ class RPNHead(tf.keras.Model):
         
         return rpn_class_loss, rpn_bbox_loss
     
-    @tf.function
     def get_proposals(self, 
                       rpn_probs, 
                       rpn_deltas, 
@@ -168,7 +166,6 @@ class RPNHead(tf.keras.Model):
         proposals = tf.concat(proposals_list, axis=0)
         return tf.stop_gradient(proposals)
     
-    @tf.function
     def _get_proposals_single(self, 
                               rpn_probs, 
                               rpn_deltas, 
