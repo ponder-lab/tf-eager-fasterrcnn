@@ -7,17 +7,17 @@ import visualize
 from scripts.utils import write_csv
 import timeit
 
-# Seeded for the corpus harness, so the shuffle, the random flip and the weight initialization,
-# and with them the data-dependent shapes compute_overlaps traces, are the same on every run and arm.
-tf.random.set_seed(0)
-np.random.seed(0)
-
 # tensorflow config - using one gpu and extending the GPU
 # memory region needed by the TensorFlow process
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
+
+# Seeded for the corpus harness, so the shuffle, the random flip and the weight initialization,
+# and with them the data-dependent shapes compute_overlaps traces, are the same on every run and arm.
+tf.random.set_seed(0)
+np.random.seed(0)
 
 # %%
 """
