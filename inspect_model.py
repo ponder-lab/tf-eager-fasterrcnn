@@ -64,6 +64,7 @@ batch_labels = tf.Variable(np.expand_dims(labels, 0))
 _ = model((batch_imgs, batch_metas), training=False)
 
 # %%
+model.built = True
 model.load_weights('weights/faster_rcnn.h5')
 
 # %%
