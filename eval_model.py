@@ -9,7 +9,7 @@ from detection.datasets import coco, data_generator
 from detection.models.detectors import faster_rcnn
 
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 # %%
 img_mean = (123.675, 116.28, 103.53)
@@ -35,6 +35,7 @@ batch_metas = tf.Variable(np.expand_dims(img_meta, 0))
 
 _ = model((batch_imgs, batch_metas), training=False)
 
+model.built = True
 model.load_weights('weights/faster_rcnn.h5', by_name=True)
 
 # %%
