@@ -9,7 +9,7 @@ from detection.datasets import coco, data_generator
 from detection.models.detectors import faster_rcnn
 
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 # %%
 img_mean = (123.675, 116.28, 103.53)
