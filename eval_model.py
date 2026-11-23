@@ -35,6 +35,9 @@ batch_metas = tf.Variable(np.expand_dims(img_meta, 0))
 
 _ = model((batch_imgs, batch_metas), training=False)
 
+# FasterRCNN overrides __call__, so Keras never marks it built and load_weights refuses it
+# (as in train_model.py; Viredery/tf-eager-fasterrcnn#32).
+model.built = True
 model.load_weights('weights/faster_rcnn.h5', by_name=True)
 
 # %%
