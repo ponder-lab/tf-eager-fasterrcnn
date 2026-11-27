@@ -38,6 +38,7 @@ class _Bottleneck(tf.keras.Model):
                                                name=conv_name_base + '1')
             self.bn_shortcut = layers.BatchNormalization(name=bn_name_base + '1')     
     
+    @tf.function
     def __call__(self, inputs, training=False):
         x = self.conv2a(inputs)
         x = self.bn2a(x, training=training)
@@ -128,6 +129,7 @@ class ResNet(tf.keras.Model):
         
         self.out_channel = (256, 512, 1024, 2048)
     
+    @tf.function
     def __call__(self, inputs, training=True):
         x = self.padding(inputs)
         x = self.conv1(x)

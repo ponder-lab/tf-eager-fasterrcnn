@@ -41,6 +41,7 @@ class BBoxHead(tf.keras.Model):
         
         self.rcnn_delta_fc = layers.Dense(num_classes * 4, name='rcnn_bbox_fc')
         
+    @tf.function
     def __call__(self, inputs, training=True):
         '''
         Args
@@ -73,6 +74,7 @@ class BBoxHead(tf.keras.Model):
         
         return logits, probs, deltas
 
+    @tf.function
     def loss(self, 
              rcnn_class_logits, rcnn_deltas, 
              rcnn_labels, rcnn_label_weights, rcnn_delta_targets, rcnn_delta_weights):

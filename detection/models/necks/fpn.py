@@ -36,6 +36,7 @@ class FPN(tf.keras.Model):
         
         self.fpn_p6 = layers.MaxPooling2D(pool_size=(2, 2), strides=2, name='fpn_p6')
             
+    @tf.function
     def __call__(self, inputs, training=True):
         C2, C3, C4, C5 = inputs
         
