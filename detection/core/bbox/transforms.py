@@ -75,6 +75,7 @@ def delta2bbox(box, delta, target_means, target_stds):
     result = tf.stack([y1, x1, y2, x2], axis=1)
     return result
 
+@tf.function
 def bbox_clip(box, window):
     '''
     Args
@@ -94,6 +95,7 @@ def bbox_clip(box, window):
     clipped.set_shape((clipped.shape[0], 4))
     return clipped
 
+@tf.function
 def bbox_flip(bboxes, width):
     '''Flip bboxes horizontally.
     
